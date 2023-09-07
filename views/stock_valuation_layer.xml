@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_stock_valuation_layer_form_inherit" model="ir.ui.view">
+        <field name="name">stock.valuation.layer.form</field>
+        <field name="model">stock.valuation.layer</field>
+        <field name="inherit_id" ref="stock_account.stock_valuation_layer_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='create_date']" position="replace">
+                <field name="date" string="Date" attrs="{'invisible':[('stock_move_id', '=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='stock_move_id']" position="after">
+                <field name="warehouse_id"/>
+                <field name="create_date" string="Create On"/>
+            </xpath>
+            <xpath expr="//page[@name='valuation']" position="replace">
+                <page string="Valuation" name="valuation">
+                    <group>
+                        <group>
+                            <field name="quantity"/>
+                            <field name="uom_id" groups="uom.group_uom"/>
+                            <field name="qty_of_secondary_uom" attrs="{'invisible': [('secondary_uom', '=', False)]}"/>
+                            <field name="secondary_uom" attrs="{'invisible': [('secondary_uom', '=', False)]}"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="unit_cost"/>
+                            <field name="value"/>
+                            <field name="remaining_qty"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_stock_valuation_layer_tree_inherit_new" model="ir.ui.view">
+        <field name="name">stock.valuation.layer.tree.inherit.new</field>
+        <field name="model">stock.valuation.layer</field>
+        <field name="inherit_id" ref="stock_account.stock_valuation_layer_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='create_date']" position="after">
+                <field name="date" string="Date"/>
+            </xpath>
+            <xpath expr="//field[@name='create_date']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+           <xpath expr="//field[@name='product_id']" position="after">
+                <field name="warehouse_id"/>
+                <field name="location_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_stock_valuation_layer_tree_inherit" model="ir.ui.view">
+        <field name="name">stock.valuation.layer.tree</field>
+        <field name="model">stock.valuation.layer</field>
+        <field name="inherit_id" ref="stock_account.view_inventory_valuation_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='group_by_product_id']" position="after">
+                <filter string="Warehouse" name="group_by_warehouse_id" context="{'group_by':'warehouse_id'}"/>
+                <filter string="Location" name="group_by_location_id" context="{'group_by':'location_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+
+
+</odoo>
